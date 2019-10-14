@@ -1,0 +1,19 @@
+.Homepage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.Homepage .btn {
+  width: 150px;
+  margin-bottom: 20px;
+}
+

@@ -1,0 +1,12 @@
+.CardPage-loader {
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.CardPage-loader .spinner-border {
+}
+
+.CardPage {
+  background-color: #ECF1F5;
+}

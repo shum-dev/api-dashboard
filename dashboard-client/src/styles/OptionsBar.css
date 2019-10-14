@@ -1,0 +1,59 @@
+.OptionsBar .btn {
+  margin: auto 0;
+}
+.nav-item {
+  display: flex;
+}
+.OptionsBar .nav {
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color:white;
+}
+
+.nav .nav-item {
+  margin: 0 5px;
+}
+
+.nav .nav-item a {
+  /* position: relative; */
+  color: #858e96;
+  opacity: .7;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-right: 20px;
+  margin-bottom: -9px;
+}
+
+.nav .nav-item a:hover {
+  text-decoration: none;
+  color: #858e96;
+  opacity: 1;
+}
+
+.nav .nav-item a::after {
+  content:'';
+  background: #F06586;
+  display: block;
+  /* position: absolute; */
+  /* top: 31px; */
+  width: 0%;
+  height: 4px;
+  margin: auto;
+  margin-top: 10px;
+  transition: all .5s ease-in-out;
+}
+
+.nav .nav-item a.active::after  {
+  background: #F987A4;
+  width: 100%;
+}
+
+.nav .nav-item a.active {
+  color: #F06586;
+}
+
+button.dropdown-item.active {
+  background-color: rgba(240, 101, 133, 0.582);
+}
