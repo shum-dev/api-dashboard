@@ -30,7 +30,6 @@ export function authAdmin(type, adminData) {
       })
       .catch(err => {
         dispatch(addError(err.message));
-        console.log(err);
       })
     })
   }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { logOut } from '../store/actions/admin';
 import { setRandomCardsList } from '../store/actions/cards';
@@ -11,91 +11,72 @@ import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav,
 
 import '../styles/OptionsBar.css';
 
-class OptionsBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpen: false
-    }
-  }
-  componentDidUpdate(prevProps, prevState) {
-    const { usersList } = this.props.users;
-    if( prevProps.users.usersList !== usersList) {
-      window.localStorage.setItem('usersList', JSON.stringify(usersList));
-    }
-  }
-  logOut = e => {
+const OptionsBar = (props) => {
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    window.localStorage.setItem('usersList', JSON.stringify(props.users.usersList));
+  }, [props.users.usersList]);
+  const logOut = e => {
     e.preventDefault();
-    this.props.setUsersList([]);
-    this.props.setActiveUser(null)
-    this.props.logOut();
-    this.props.history.push('/');
+    props.setUsersList([]);
+    props.setActiveUser(null)
+    props.logOut();
+    props.history.push('/');
   }
-  toggle = () => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
+  const handleClick = item => {
+    props.setActiveUser(item);
+    props.setRandomCardsList();
+    setIsOpen(false);
   }
-  handleClick = item => {
-    this.props.setActiveUser(item);
-    this.props.setRandomCardsList();
-    this.setState({
-      isOpen: false
-    })
-  }
-  render() {
-    const { currentAdmin, users } = this.props;
-    const usersList = users.usersList.map(item => (
-        <DropdownItem
-          className={users.activeUser && item.id === users.activeUser.id ? 'active' : null}
-          key={item.id}
-          onClick={this.handleClick.bind(this, item)}
-        >
-          {item.lname}
-        </DropdownItem>
-    ));
-    return(
-      <div className='OptionsBar'>
-        <Navbar color="dark" dark expand="md">
-          <NavbarBrand href='/'>Dashboard</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-
-              <NavItem>
-                <NavLink>{currentAdmin.isAuthenticated && currentAdmin.admin.adminName}</NavLink>
-              </NavItem>
-              <UncontrolledDropdown nav inNavbar >
-                <DropdownToggle nav caret>
-                  Users
-                </DropdownToggle>
-                <DropdownMenu right>
-                  {usersList}
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              { currentAdmin.isAuthenticated && (
-                  <NavItem>
-                    <Button color="secondary" size="sm" onClick={this.logOut}>LogOut</Button>
-                  </NavItem>
-                )
-              }
-            </Nav>
-          </Collapse>
-        </Navbar>
-        {currentAdmin.isAuthenticated && (
-          <Nav>
+  const { currentAdmin, users } = props;
+  return (
+    <div className='OptionsBar'>
+      <Navbar color="dark" dark expand="md">
+        <NavbarBrand href='/'>Dashboard</NavbarBrand>
+        <NavbarToggler onClick={() => setIsOpen(!isOpen)} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="ml-auto" navbar>
             <NavItem>
-              <RouterNavLink exact to="/">Dashboard</RouterNavLink>
+              <NavLink>{currentAdmin.isAuthenticated && currentAdmin.admin.adminName}</NavLink>
             </NavItem>
-            <NavItem>
-              <RouterNavLink exact to="/Options">Options page</RouterNavLink>
-            </NavItem>
+            <UncontrolledDropdown nav inNavbar >
+              <DropdownToggle nav caret>
+                Users
+              </DropdownToggle>
+              <DropdownMenu right>
+                {props.users.usersList.map(item => (
+                    <DropdownItem
+                      className={users.activeUser && item.id === users.activeUser.id ? 'active' : null}
+                      key={item.id}
+                      onClick={handleClick.bind(this, item)}
+                    >
+                      {item.lname}
+                    </DropdownItem>
+                  ))
+                }
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            { currentAdmin.isAuthenticated && (
+                <NavItem>
+                  <Button color="secondary" size="sm" onClick={logOut}>LogOut</Button>
+                </NavItem>
+              )
+            }
           </Nav>
-        )}
-
+        </Collapse>
+      </Navbar>
+      {currentAdmin.isAuthenticated && (
+        <Nav>
+          <NavItem>
+            <RouterNavLink exact to="/">Dashboard</RouterNavLink>
+          </NavItem>
+          <NavItem>
+            <RouterNavLink exact to="/Options">Options page</RouterNavLink>
+          </NavItem>
+        </Nav>
+      )}
     </div>
-    )
-  }
+  )
 }
 
 function mapStateToProps(reduxState) {

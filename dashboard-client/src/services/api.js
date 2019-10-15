@@ -1,4 +1,5 @@
 import axios from 'axios';
+import seedCards from '../seedCards';
 
 export function setTokenHeader(token) {
   if(token) {
@@ -10,12 +11,34 @@ export function setTokenHeader(token) {
 
 export function apiCall(method, path, data) {
   return new Promise((resolve, reject) => {
-    // return axios[method](path, data).then( res => {
-    axios[method](path, data).then( res => {
-      return resolve(res.data);
-    }).catch(err => {
-      return reject(err.response.data.error);
+    // return axios[method](path, data)
+    axios[method](path, data)
+    .then(res => {
+      resolve(res.data);
+    })
+    .catch(err => {
+      reject(err.response.data.error);
     });
   })
 }
 
+export function fetchCardData(cardId) {
+  let foundCard = seedCards.filter(item => item.id === cardId)[0];
+  // return () => {
+    return new Promise((resolve, reject) => {
+      apiCall('get', foundCard.Endpoint)
+      .then(res => {
+        let apiData;
+        if(foundCard.Path) {
+          apiData = res[foundCard.Path]
+        } else {
+          apiData = res;
+        }
+        resolve(apiData);
+      })
+      .catch(err => {
+        reject(err);
+      })
+    })
+  // }
+}

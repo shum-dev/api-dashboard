@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
+import useInputeState from '../hooks/useInputState';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { connect } from 'react-redux';
 import { createNewUser, setActiveUser, updateUser } from '../store/actions/users';
@@ -6,127 +7,108 @@ import uuid from 'uuid/v4';
 
 import '../styles/AddUserForm.css'
 
-class AddUserForm extends Component {
-  constructor(props) {
-    super(props);
-    this.props.activeUser
-    ? this.state = {...this.props.activeUser}
-    : this.state = {
-        fname: '',
-        lname: '',
-        email: '',
-        bio: '',
-        gender: '',
-        id: ''
+const AddUserForm = (props) => {
+  const initState = (key) => {
+    return props.activeUser ? props.activeUser[key] : '';
+  }
+  const [fname, setFname, updateFname, resetFname] = useInputeState(initState('fname'));
+  const [lname, setlname, updateLname, resetLname] = useInputeState(initState('lname'));
+  const [email, setEmail, updateEmail, resetEmail] = useInputeState(initState('email'));
+  const [bio, setBio, updateBio, resetBio] = useInputeState(initState('bio'));
+  const [gender, setGender, updateGender, resetGender] = useInputeState(initState('gender'));
+  const [id, setId, , resetId] = useInputeState(initState('id'));
+
+  useEffect(() => {
+    if(props.activeUser){
+      let {fname, lname, email, bio, gender, id} = props.activeUser;
+      setFname(fname);
+      setlname(lname);
+      setEmail(email);
+      setBio(bio);
+      setGender(gender);
+      setId(id);
     }
-  }
-  componentDidUpdate(prevProps, prevState){
-    const { activeUser } = this.props;
-    if( activeUser && prevProps.activeUser !== activeUser) {
-      let {fname, lname, email, bio, gender, id} = activeUser;
-      this.setState({
-        fname,
-        lname,
-        email,
-        bio,
-        gender,
-        id
-      });
-     }
-  }
-  createNew = e => {
+  }, [props.activeUser, setFname, setlname, setEmail, setBio, setGender, setId]);
+
+  const createNewUser = e => {
     e.preventDefault();
-    this.props.createNewUser({...this.state, id: uuid()});
-    this.props.setActiveUser(null);
-    this.setState({
-      fname: '',
-      lname: '',
-      email: '',
-      bio: '',
-      gender: '',
-      id: ''
-    });
+    props.createNewUser({fname, lname, email, bio, gender, id: uuid()});
+    props.setActiveUser(null);
+    resetSate();
   }
-  editCurrentUser = e => {
+  const editCurrentUser = e => {
     e.preventDefault();
-    this.props.updateUser(this.state);
-    this.props.setActiveUser(null);
-    this.setState({
-      fname: '',
-      lname: '',
-      email: '',
-      bio: '',
-      gender: '',
-      id: ''
-    });
+    props.updateUser({fname, lname, email, bio, gender, id});
+    props.setActiveUser(null);
+    resetSate();
   }
-  handleChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
+  const resetSate = () => {
+    resetFname();
+    resetLname();
+    resetEmail();
+    resetBio();
+    resetGender();
+    resetId();
   }
-  render() {
-    var {fname, lname, email, bio, gender} = this.state;
-    return (
-      <div className='AddUserForm-container'>
-        <Form className='AddUserForm'>
-          <FormGroup>
-            <Label for="fname">First Name</Label>
-            <Input type="text" name="fname" id="fname" value={fname} onChange={this.handleChange}/>
+  return (
+    <div className='AddUserForm-container'>
+      <Form className='AddUserForm'>
+        <FormGroup>
+          <Label for="fname">First Name</Label>
+          <Input type="text" name="fname" id="fname" value={fname} onChange={updateFname}/>
+        </FormGroup>
+        <FormGroup>
+          <Label for="lname">Last Name</Label>
+          <Input type="text" name="lname" id="lname" value={lname} onChange={updateLname}/>
+        </FormGroup>
+        <FormGroup>
+          <Label for="email">Email</Label>
+          <Input type="email" name="email" id="email" value={email} onChange={updateEmail}/>
+        </FormGroup>
+        <FormGroup>
+          <Label for="bio">Bio</Label>
+          <Input type="textarea" name="bio" id="bio" value={bio} onChange={updateBio} />
+        </FormGroup>
+        <FormGroup tag="fieldset">
+          <Label>Gender</Label>
+          <FormGroup check>
+            <Label check>
+              <Input
+                type="radio"
+                name="gender"
+                value='male'
+                onChange={updateGender}
+                checked={gender === 'male' ? true : false} />
+              Male
+            </Label>
           </FormGroup>
-          <FormGroup>
-            <Label for="lname">Last Name</Label>
-            <Input type="text" name="lname" id="lname" value={lname} onChange={this.handleChange}/>
+          <FormGroup check>
+            <Label check>
+              <Input
+                type="radio"
+                name="gender"
+                value='female'
+                onChange={updateGender}
+                checked={gender === 'female' ? true : false}
+              />
+              Female
+            </Label>
           </FormGroup>
-          <FormGroup>
-            <Label for="email">Email</Label>
-            <Input type="email" name="email" id="email" value={email} onChange={this.handleChange}/>
-          </FormGroup>
-          <FormGroup>
-            <Label for="bio">Bio</Label>
-            <Input type="textarea" name="bio" id="bio" value={bio} onChange={this.handleChange} />
-          </FormGroup>
-          <FormGroup tag="fieldset">
-            <Label>Gender</Label>
-            <FormGroup check>
-              <Label check>
-                <Input
-                  type="radio"
-                  name="gender"
-                  value='male'
-                  onChange={this.handleChange}
-                  checked={gender === 'male' ? true : false} />
-                Male
-              </Label>
-            </FormGroup>
-            <FormGroup check>
-              <Label check>
-                <Input
-                  type="radio"
-                  name="gender"
-                  value='female'
-                  onChange={this.handleChange}
-                  checked={gender === 'female' ? true : false}
-                />
-                Female
-              </Label>
-            </FormGroup>
-          </FormGroup>
-          <Button
-            onClick={this.createNew}
-            disabled={fname && lname && email && bio && gender ? false : true}
-          >
-            Create New
-          </Button>
-          <Button
-            onClick={this.editCurrentUser}
-            disabled={this.state.id ? false : true}
-          >
-              Edit Current</Button>
-        </Form>
-      </div>
-    );
-  }
+        </FormGroup>
+        <Button
+          onClick={createNewUser}
+          disabled={fname && lname && email && bio && gender ? false : true}
+        >
+          Create New
+        </Button>
+        <Button
+          onClick={editCurrentUser}
+          disabled={id ? false : true}
+        >
+            Edit Current</Button>
+      </Form>
+    </div>
+  );
 }
 
 function mapStateToProps(reduxState) {

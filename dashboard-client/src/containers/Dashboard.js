@@ -1,40 +1,37 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import '../styles/Dashboard.css';
 
-class Dashboard extends Component {
-  handleClick = e => {
-    this.props.history.push(`/cards/${e.target.id}`)
+const Dashboard = ({cards, history}) => {
+  const handleClick = e => {
+    history.push(`/cards/${e.target.id}`)
   }
-  render() {
-    const { cards } = this.props;
-    const currentCards = cards.map(item => (
-      <Card
-        key={item.id}
-        className='Dashboard-card'
-        onClick={this.handleClick}
-        id={item.id}
-      >
-        <div className='Dashboard-img-container'>
-          <CardImg top width="100%" src={item.Img} alt="Card image cap" />
-        </div>
-        <CardBody>
-          <CardTitle className='h4'>{item.API}</CardTitle>
-          <CardText>{item.Description}</CardText>
-        </CardBody>
-      </Card>
-    ));
-    return (
+  return (
       <div className='Dashboard'>
         <div className='Dashboard-container'>
-          {currentCards}
+          { cards.map(item => (
+              <Card
+                key={item.id}
+                className='Dashboard-card'
+                onClick={handleClick}
+                id={item.id}
+              >
+                <div className='Dashboard-img-container'>
+                  <CardImg top width="100%" src={item.Img} alt="Card image cap" />
+                </div>
+                <CardBody>
+                  <CardTitle className='h4'>{item.API}</CardTitle>
+                  <CardText>{item.Description}</CardText>
+                </CardBody>
+              </Card>
+            ))
+          }
         </div>
       </div>
     )
-  }
 }
 
 function mapStateToProps(reduxState) {
