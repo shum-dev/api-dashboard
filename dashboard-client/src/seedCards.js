@@ -30,7 +30,7 @@ export default [
     id: 'nagerdate',
     API: "Nager.Date",
     Description: "Public holidays for Russia in 2019",
-    Endpoint: "/nagerdate",
+    Endpoint: "/api/nagerdate",
     Category: "Calendar",
     Path: null,
     Img: calendar
@@ -39,7 +39,7 @@ export default [
     id: 'trivia',
     API: "Trivia",
     Description: "Free to use, user-contributed trivia question database.",
-    Endpoint: "/trivia",
+    Endpoint: "/api/trivia",
     Category: "Quizzes",
     Path: 'results',
     Img: trivia
@@ -57,7 +57,7 @@ export default [
     id: 'publicapis',
     API: "Public APIs",
     Description: "A collective list of free APIs for use in software and web development.",
-    Endpoint: "/publicapis",
+    Endpoint: "/api/publicapis",
     Category: "API",
     Path: 'entries',
     Img: api
@@ -75,7 +75,7 @@ export default [
     id: 'githubjobs',
     API: "Github Jobs",
     Description: "Github jobs for JavaScript developers",
-    Endpoint: "/githubjobs",
+    Endpoint: "/api/githubjobs",
     Category: "Jobs",
     Img: job
   }

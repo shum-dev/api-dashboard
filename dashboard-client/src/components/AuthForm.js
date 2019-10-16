@@ -6,8 +6,8 @@ import { Alert } from 'reactstrap';
 import '../styles/AuthForm.css';
 
 export default (props) => {
-  const [adminName, , updateAdminName ] = useInputeState('');
-  const [password, , updatePassword ] = useInputeState('');
+  let initialState = {adminName: '', password: ''};
+  const [state, , updateState ] = useInputeState(initialState);
   useEffect(() => {
     const { history, removeError } = props;
     history.listen(() => {
@@ -15,6 +15,7 @@ export default (props) => {
     })
   }, [props]);
   const handleSubmit = e => {
+    const { adminName, password } = state
     e.preventDefault();
     const authType = props.location.pathname.slice(1);
     props.authAdmin(authType, { adminName, password })
@@ -42,8 +43,8 @@ export default (props) => {
             name="adminName"
             id="adminName"
             placeholder="Enter your name"
-            onChange={updateAdminName}
-            value={adminName}
+            onChange={updateState}
+            value={state.adminName}
           />
         </FormGroup>
         <FormGroup>
@@ -53,12 +54,12 @@ export default (props) => {
             name="password"
             id="password"
             placeholder="Enter your password"
-            onChange={updatePassword}
-            value={password}
+            onChange={updateState}
+            value={state.password}
           />
         </FormGroup>
         <Button
-          disabled={ adminName && password ? false : true}
+          disabled={ state.adminName && state.password ? false : true}
         >
           {buttonText}
         </Button>

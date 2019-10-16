@@ -7,13 +7,12 @@ const express = require('express'),
       authRoutes = require('./routes/auth'),
       request = require('request');
 
-const PORT = 8081;
+const PORT = 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/api/auth', authRoutes);
-
+app.use('/auth', authRoutes);
 
 // PROXY for avoid CORS policy
 app.get('/nagerdate', (req, res) => {
@@ -71,5 +70,6 @@ app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log('Server is starting on port: ', PORT);
+  console.log('Environment variables is: ', process.env.MONGO_HOST);
 
 })

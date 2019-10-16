@@ -8,66 +8,56 @@ import uuid from 'uuid/v4';
 import '../styles/AddUserForm.css'
 
 const AddUserForm = (props) => {
-  const initState = (key) => {
-    return props.activeUser ? props.activeUser[key] : '';
+  let initialState = {
+    fname: '',
+    lname: '',
+    email: '',
+    bio: '',
+    gender: '',
+    id: ''
   }
-  const [fname, setFname, updateFname, resetFname] = useInputeState(initState('fname'));
-  const [lname, setlname, updateLname, resetLname] = useInputeState(initState('lname'));
-  const [email, setEmail, updateEmail, resetEmail] = useInputeState(initState('email'));
-  const [bio, setBio, updateBio, resetBio] = useInputeState(initState('bio'));
-  const [gender, setGender, updateGender, resetGender] = useInputeState(initState('gender'));
-  const [id, setId, , resetId] = useInputeState(initState('id'));
+  const [state, setState, updateState, resetState] = useInputeState(initialState);
 
   useEffect(() => {
     if(props.activeUser){
-      let {fname, lname, email, bio, gender, id} = props.activeUser;
-      setFname(fname);
-      setlname(lname);
-      setEmail(email);
-      setBio(bio);
-      setGender(gender);
-      setId(id);
+      const {fname, lname, email, bio, gender, id} = props.activeUser;
+      setState({fname, lname, email, bio, gender, id});
     }
-  }, [props.activeUser, setFname, setlname, setEmail, setBio, setGender, setId]);
+  }, [props.activeUser, setState]);
 
   const createNewUser = e => {
+    const {fname, lname, email, bio, gender} = state;
     e.preventDefault();
     props.createNewUser({fname, lname, email, bio, gender, id: uuid()});
     props.setActiveUser(null);
-    resetSate();
+    resetState();
   }
   const editCurrentUser = e => {
+    const {fname, lname, email, bio, gender, id} = state;
     e.preventDefault();
     props.updateUser({fname, lname, email, bio, gender, id});
     props.setActiveUser(null);
-    resetSate();
+    resetState();
   }
-  const resetSate = () => {
-    resetFname();
-    resetLname();
-    resetEmail();
-    resetBio();
-    resetGender();
-    resetId();
-  }
+  const {fname, lname, email, bio, gender, id} = state;
   return (
     <div className='AddUserForm-container'>
       <Form className='AddUserForm'>
         <FormGroup>
           <Label for="fname">First Name</Label>
-          <Input type="text" name="fname" id="fname" value={fname} onChange={updateFname}/>
+          <Input type="text" name="fname" id="fname" value={fname} onChange={updateState}/>
         </FormGroup>
         <FormGroup>
           <Label for="lname">Last Name</Label>
-          <Input type="text" name="lname" id="lname" value={lname} onChange={updateLname}/>
+          <Input type="text" name="lname" id="lname" value={lname} onChange={updateState}/>
         </FormGroup>
         <FormGroup>
           <Label for="email">Email</Label>
-          <Input type="email" name="email" id="email" value={email} onChange={updateEmail}/>
+          <Input type="email" name="email" id="email" value={email} onChange={updateState}/>
         </FormGroup>
         <FormGroup>
           <Label for="bio">Bio</Label>
-          <Input type="textarea" name="bio" id="bio" value={bio} onChange={updateBio} />
+          <Input type="textarea" name="bio" id="bio" value={bio} onChange={updateState} />
         </FormGroup>
         <FormGroup tag="fieldset">
           <Label>Gender</Label>
@@ -77,7 +67,7 @@ const AddUserForm = (props) => {
                 type="radio"
                 name="gender"
                 value='male'
-                onChange={updateGender}
+                onChange={updateState}
                 checked={gender === 'male' ? true : false} />
               Male
             </Label>
@@ -88,7 +78,7 @@ const AddUserForm = (props) => {
                 type="radio"
                 name="gender"
                 value='female'
-                onChange={updateGender}
+                onChange={updateState}
                 checked={gender === 'female' ? true : false}
               />
               Female

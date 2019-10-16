@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 mongoose.set('debug', true);
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://localhost:28888/dashboard', {
+mongoose.connect(process.env.MONGO_HOST, {
   keepAlive: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
