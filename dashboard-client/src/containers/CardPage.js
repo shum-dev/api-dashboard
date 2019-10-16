@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { connect } from 'react-redux';
 import { fetchCardData } from '../services/api';
 import { Redirect } from 'react-router-dom';
@@ -17,6 +17,8 @@ const CardPage = (props) => {
     fetchCardData(cardId)
     .then(apiData => {
       if(!didCancel){
+        console.log('API data: ', apiData);
+
         setApiData(apiData);
         setInLoad(false);
       }
@@ -38,11 +40,7 @@ const CardPage = (props) => {
   }, [props.activeUser, props.history]);
 
   const getKeys = () => {
-    if(Array.isArray(apiData)){
       return Object.keys(apiData[0]);
-    } else {
-      return Object.keys(apiData);
-    }
   }
   const getHeader = () => {
     let keys = getKeys();
@@ -73,16 +71,23 @@ const CardPage = (props) => {
   }
   return (
     <div className='CardPage'>
-        <Table responsive striped>
-          <thead>
-            <tr>
-              {getHeader()}
-            </tr>
-          </thead>
-          <tbody>
-            {getRowsData()}
-          </tbody>
-        </Table>
+      {
+        Array.isArray(apiData) ? (
+          <Table responsive striped>
+            <thead>
+              <tr>
+                {getHeader()}
+              </tr>
+            </thead>
+            <tbody>
+              {getRowsData()}
+            </tbody>
+          </Table>
+        ) :
+        (
+         <RecursiveProperty property={apiData} root={true} propertyName="Click me... " excludeBottomBorder={false}/>
+        )
+      }
     </div>
   )
 }
@@ -102,5 +107,90 @@ function mapStateToProps(reduxState) {
     activeUser: reduxState.users.activeUser
   };
 };
+
+const RecursiveProperty = (props) => {
+  const LeafPropertyName = (props) => {
+    const style = {
+      color: 'black',
+      fontSize: '14px',
+      fontWeight: 'bold',
+    }
+    return (
+      <span className='PropertyName' style={style}>
+        {props.children}
+      </span>
+    )
+  }
+  return (
+    <RecursivePropertyContainer excludeBottomBorder={props.excludeBottomBorder}>
+      {props.property ? (
+        typeof props.property === 'number' ||
+        typeof props.property === 'string' ||
+        typeof props.property === 'boolean' ? (
+          <>
+            <LeafPropertyName>{props.propertyName}: </LeafPropertyName>
+            {props.property.toString()}
+          </>
+        ) : (
+          <ExpandableProperty title={props.propertyName} expanded={props.rootProperty}>
+            {Object.values(props.property).map((property, index, arr) => (
+              <RecursiveProperty
+                key={index}
+                property={property}
+                propertyName={Object.getOwnPropertyNames(props.property)[index]}
+                excludaBottomBorder={index === arr.length - 1}
+              />
+            ))}
+          </ExpandableProperty>
+        )
+      ) : (
+        'Property is empty'
+      )}
+    </RecursivePropertyContainer>
+  )
+}
+
+const RecursivePropertyContainer = (props) => {
+  const style = {
+    paddingTop: '10px',
+    paddingLeft: '3px',
+    marginLeft: '10px',
+    color: '#666',
+    fontSize: '16px'
+  }
+  return (
+    <div className='RecursivePropertyContainer' style={style}>
+      {props.children}
+    </div>
+  )
+}
+
+const ExpandableProperty = (props) => {
+  const [isOpen, setIsOpen ] = useState(!!props.expanded);
+  const PropertyName = (props) => {
+    const style = {
+      color: '#008080',
+      fontSize: '14px',
+      fontWeight: 'bold',
+      cursor: 'pointer'
+    }
+    return (
+      <div className='PropertyName' onClick={props.onClick} style={style}>
+        {props.children}
+      </div>
+    )
+  }
+  return (
+    <>
+      <PropertyName onClick={() => setIsOpen(!isOpen)}>
+        {props.title}
+        {isOpen ? <span className='plusMinus'>-</span> : <span className='plusMinus'>+</span>}
+      </PropertyName>
+      {isOpen ? props.children : null}
+      {React.Children.count(props.children) === 0 && isOpen ? 'The list is empty!' : null}
+    </>
+
+  );
+}
 
 export default connect( mapStateToProps, null)(CardPage);

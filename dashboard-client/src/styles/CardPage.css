@@ -10,3 +10,9 @@
 .CardPage {
   background-color: #ECF1F5;
 }
+
+.plusMinus {
+  color: rgb(196, 79, 79);
+  margin-left: 10px;
+  font-size: 1.5em;
+}

@@ -23,7 +23,7 @@ export default [
     Description: "API for generating random user data.",
     Endpoint: "https://randomuser.me/api/",
     Category: "People",
-    Path: 'results',
+    Path: null,
     Img: randomUser
   },
   {
