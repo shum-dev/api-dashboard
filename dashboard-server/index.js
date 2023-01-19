@@ -37,9 +37,9 @@ app.get('/trivia', (req, res) => {
   )
 });
 
-app.get('/githubjobs', (req, res) => {
+app.get('/breakingbad', (req, res) => {
   request(
-    { url: 'https://jobs.github.com/positions.json?description=javascript&full_time=true' }, (error, response, body) => {
+    { url: 'https://api.breakingbadquotes.xyz/v1/quotes/5' }, (error, response, body) => {
       if(error || response.statusCode !== 200) {
         return res.status(500).json({type: 'error', message: error.message });
       }
@@ -51,6 +51,17 @@ app.get('/githubjobs', (req, res) => {
 app.get('/publicapis', (req, res) => {
   request(
     { url: 'https://api.publicapis.org/entries' }, (error, response, body) => {
+      if(error || response.statusCode !== 200) {
+        return res.status(500).json({type: 'error', message: error.message });
+      }
+      res.json(JSON.parse(body));
+    }
+  )
+});
+
+app.get('/jikanapi', (req, res) => {
+  request(
+    { url: 'https://api.jikan.moe/v4/top/people' }, (error, response, body) => {
       if(error || response.statusCode !== 200) {
         return res.status(500).json({type: 'error', message: error.message });
       }

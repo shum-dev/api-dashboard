@@ -1,6 +1,6 @@
-FROM node:alpine
+FROM node:16.19-alpine
 WORKDIR /app
 COPY ./package.json ./
-RUN npm install
+RUN npm set timeout=100000 && npm install
 COPY . .
 CMD ["npm", "run", "start"]

@@ -1,82 +1,85 @@
-import calendar from './svg/calendar.svg';
-import braking_bad from './svg/braking_bad.svg';
-import people from './svg/people.png';
-import randomUser from './svg/random_user.svg';
-import job from './svg/job.svg';
-import api from './svg/api.svg';
-import joke from './svg/joke.svg';
-import trivia from './svg/trivia.svg';
+import calendar from "./svg/calendar.svg";
+import braking_bad from "./svg/braking_bad.svg";
+import people from "./svg/people.png";
+import randomUser from "./svg/random_user.svg";
+import anime from "./svg/anime.svg";
+import api from "./svg/api.svg";
+import joke from "./svg/joke.svg";
+import trivia from "./svg/trivia.svg";
 
 export default [
   {
-    id: 'breakingbadapi',
+    id: "breakingbadapi",
     API: "Breaking Bad API",
-    Description: "Retrieve information from all characters.",
-    Endpoint: "https://breakingbadapi.com/api/characters",
+    Description: "A free API to retrieve some quotes of Breaking Bad, bitch!",
+    Endpoint: "/api/breakingbad",
     Category: "Films",
     Path: null,
-    Img: braking_bad
+    Img: braking_bad,
   },
   {
-    id: 'randomusergenerator',
+    id: "randomusergenerator",
     API: "Random User Generator",
     Description: "API for generating random user data.",
-    Endpoint: "https://randomuser.me/api/",
+    Endpoint: "https://randomuser.me/api/?results=10",
     Category: "People",
-    Path: null,
-    Img: randomUser
+    Path: 'results',
+    Img: randomUser,
   },
   {
-    id: 'nagerdate',
+    id: "nagerdate",
     API: "Nager.Date",
     Description: "Public holidays for Russia in 2019",
     Endpoint: "/api/nagerdate",
     Category: "Calendar",
     Path: null,
-    Img: calendar
+    Img: calendar,
   },
   {
-    id: 'trivia',
+    id: "trivia",
     API: "Trivia",
     Description: "Free to use, user-contributed trivia question database.",
     Endpoint: "/api/trivia",
     Category: "Quizzes",
-    Path: 'results',
-    Img: trivia
+    Path: "results",
+    Img: trivia,
   },
   {
-    id: 'reqres',
+    id: "reqres",
     API: "ReqRes",
-    Description: 'API for generating multiple random users with basic data.',
-    Endpoint: "https://reqres.in/api/users?page=2",
+    Description: "API for generating multiple random users with basic data.",
+    Endpoint: "https://reqres.in/api/users?page=1",
     Category: "People",
-    Path: 'data',
-    Img: people
+    Path: "data",
+    Img: people,
   },
   {
-    id: 'publicapis',
+    id: "publicapis",
     API: "Public APIs",
-    Description: "A collective list of free APIs for use in software and web development.",
+    Description:
+      "A collective list of free APIs for use in software and web development.",
     Endpoint: "/api/publicapis",
     Category: "API",
-    Path: 'entries',
-    Img: api
+    Path: "entries",
+    Img: api,
   },
   {
-    id: 'jokeapi',
+    id: "jokeapi",
     API: "JokeAPI",
     Description: "Programming Jokes",
-    Endpoint: "https://sv443.net/jokeapi/category/Programming",
+    Endpoint: "https://v2.jokeapi.dev/joke/Programming",
     Category: "Funny",
     Path: null,
-    Img: joke
+    Img: joke,
   },
   {
-    id: 'githubjobs',
-    API: "Github Jobs",
-    Description: "Github jobs for JavaScript developers",
-    Endpoint: "/api/githubjobs",
-    Category: "Jobs",
-    Img: job
-  }
-]
+    id: "anime",
+    API: "Jikan API",
+    Description:
+      "Jikan (時間) is an open-source API for the “most active online anime + manga community” — MyAnimeList.net",
+    Endpoint: "/api/jikanapi",
+    Category: "Anime",
+    Path: "data",
+    Img: anime,
+  },
+];
