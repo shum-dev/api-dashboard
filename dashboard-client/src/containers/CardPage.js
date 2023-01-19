@@ -17,8 +17,6 @@ const CardPage = (props) => {
     fetchCardData(cardId)
     .then(apiData => {
       if(!didCancel){
-        console.log('API data: ', apiData);
-
         setApiData(apiData);
         setInLoad(false);
       }
@@ -42,12 +40,14 @@ const CardPage = (props) => {
   const getKeys = () => {
       return Object.keys(apiData[0]);
   }
+
   const getHeader = () => {
     let keys = getKeys();
     return keys.map((key, index) => {
       return <th key={key}>{key.toUpperCase()}</th>
     });
   }
+
   const getRowsData = () => {
     let items = apiData;
     let keys = getKeys();
@@ -59,6 +59,7 @@ const CardPage = (props) => {
     });
 
   }
+
   if(inLoad) {
     return (
       <div className='CardPage-loader'>
@@ -66,9 +67,11 @@ const CardPage = (props) => {
       </div>
     )
   }
+
   if(!apiData) {
     return <Redirect to='/' />
   }
+  
   return (
     <div className='CardPage'>
       {
@@ -95,7 +98,7 @@ const CardPage = (props) => {
 const RenderRow = ({keys, data}) => {
   return keys.map((key, index) => {
     if(typeof data[key] === 'object' && !Array.isArray(data[key])){
-      return <td key={index}>{JSON.stringify(data[key])}</td>
+      return <td key={index}>{JSON.stringify(data[key], null, 2)}</td>
     }
     return <td key={index}>{data[key]}</td>
   });
