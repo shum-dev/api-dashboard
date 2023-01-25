@@ -17,7 +17,11 @@ const Homepage = ({ currentAdmin }) => {
           <h5>Alredy have an account?</h5>
           <Link to="/signin" className="btn btn-primary">
             Log in
-          </Link>
+          </Link> 
+          <br/>
+          <small>Quick Access: test</small>
+          <br/>
+          <small>Password: test</small>
         </div>
       </div>
     )
