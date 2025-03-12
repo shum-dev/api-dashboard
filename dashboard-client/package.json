@@ -20,7 +20,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "cp -r build/* /var/www/api-dashboard.shum.dev"
   },
   "eslintConfig": {
     "extends": "react-app"
