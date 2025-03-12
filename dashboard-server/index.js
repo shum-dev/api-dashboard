@@ -17,7 +17,7 @@ app.use('/auth', authRoutes);
 // PROXY for avoid CORS policy
 app.get('/nagerdate', (req, res) => {
   request(
-    { url: 'https://date.nager.at/Api/v2/PublicHolidays/2019/RU' }, (error, response, body) => {
+    { url: 'https://date.nager.at/Api/v3/PublicHolidays/2019/RU' }, (error, response, body) => {
       if(error || response.statusCode !== 200) {
         return res.status(500).json({type: 'error', message: error.message });
       }
@@ -50,7 +50,7 @@ app.get('/breakingbad', (req, res) => {
 
 app.get('/publicapis', (req, res) => {
   request(
-    { url: 'https://api.publicapis.org/entries' }, (error, response, body) => {
+    { url: 'https://www.freepublicapis.com/api/apis?limit=10&sort=best' }, (error, response, body) => {
       if(error || response.statusCode !== 200) {
         return res.status(500).json({type: 'error', message: error.message });
       }
