@@ -60,7 +60,7 @@ export default [
       "A collective list of free APIs for use in software and web development.",
     Endpoint: "/api/publicapis",
     Category: "API",
-    Path: "entries",
+    Path: null,
     Img: api,
   },
   {

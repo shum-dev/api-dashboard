@@ -7,24 +7,32 @@ import '../styles/AuthForm.css';
 
 export default (props) => {
   let initialState = {adminName: '', password: ''};
+
   const [state, , updateState ] = useInputeState(initialState);
+  
   useEffect(() => {
     const { history, removeError } = props;
     history.listen(() => {
       removeError();
     })
   }, [props]);
+  
   const handleSubmit = e => {
-    const { adminName, password } = state
     e.preventDefault();
+
+    const { adminName, password } = state
+
     const authType = props.location.pathname.slice(1);
+    
     props.authAdmin(authType, { adminName, password })
       .then(() => {
         props.history.push('/');
       })
       .catch(ignore => {});
   }
+
   const { heading, buttonText, errors} = props;
+
   return (
     <div className='AuthForm'>
       <Form onSubmit={handleSubmit}>
